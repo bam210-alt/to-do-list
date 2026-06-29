@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO DO LIST</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- 
+    <style>
+        body{
+        background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
+        color:white;
+        font-family:sans-serif;
+        }
+     #task{
+        width: 500px;
+        margin: 5px 15px;
+      box-shadow: 3px 3px 10px  #2c3e50;
+    border-radius: 10px;}
+       h1{text-align: center;
+        margin-top: 20px;
+        font-size: 25px;
+        text-transform: uppercase;
+        padding: 2rem;
+        }
+    h1,p{
+            margin: 10px 15px;
+        }
+     #form{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+       .inputTaskbutton{
+width: 360px;
+height: 2rem;
+margin: 10px auto;
+border: 1px solid rgba(255, 255, 255, 0.539) ;
+background: transparent;
+color: white;
+       }
+       #default_sentence{
+        
+        padding: 1rem 6rem ;
+       }
+       #addTaskbutton{
+        background:rgb(240, 184, 3);
+        color: white;
+        width: 6.5rem;
+        height: 2.5rem;
+        border: none;
+        border-radius: 10px;
+        font-weight:bold ;
+        font-size: 1rem;
+        
+        }
+        .task{
+            display: flex;
+            position: relative;
+        }
+    
+        input[type="checkbox"]:not(:checked) {
+  appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #999;
+    border-radius: 4px;
+    background-color:transparent;
+    cursor: pointer;
+}
+
+
+input[type="checkbox"]:checked {
+    content: "✓";
+    width: 20px;
+    height: 20px;
+    border: 2px solid #a3a304;
+    border-radius: 4px;
+    color:white;
+    accent-color : gold;
+ }
+
+       .edit_task{
+        color: white;
+        background: rgb(148, 3, 184);
+        width:  4rem;
+        height: 1.5rem;
+        border: none;
+        border-radius: 10px; 
+        margin :5px;
+
+
+ 
+       }
+       .delete_task{
+        color: white;
+        background: rgb(228, 3, 3);
+        width: 4.5rem;        
+        height: 1.5rem;
+        border: none;
+        border-radius: 10px;
+        margin :5px;
+        margin-left:auto;
+
+ 
+       }
+        .text{
+        text-decoration:line-through}
+    </style> -->
+</head>
+<body>
+    <div id="task">
+        <h1>To-do-list</h1>
+        <form id="form">
+            <input type="text" placeholder="Please enter a new task" id="inputTask" required>
+            <button type="button" id="addTaskbutton">Add Task</button>
+        </form>
+        <p id="default_sentence">Aucun tache a ce moment </p>
+        <div id="task_list">
+
+        </div>
+        
+    </div>
+
+
+    <script>
+//DECLARATION VARIABLE 
+        const  addtask  =document.getElementById("addTaskbutton");
+        const inputTask =docmument.getElementById("inputTask");
+        const defaultsentence =document.getElementById("default_sentence");
+        const form= document.getElementById("form");
+
+        const tasklist =document.getElementsById("task_list");
+
+
+
+// AJOUT  D'UJNE TACHE AUNCLICK DE "AJOUTER TACHE" +AJOUT DANS LE LOClsotrage
+
+addtask.addEventListener('click',(e)=>{
+e.preventDefault();
+
+const tasktext =inputTask.value;
+if(tasktext.trim===""){
+    alert ("veuillez entrer une tache");
+}
+else{
+const div = document.createElement("div");
+div.classList.add("task");
+
+const checkbox =document.createElement('input');
+checkbox.type ="checkbox";
+checkbox.classList.add('checkbox');
+
+const text =document.createElement('p');
+text.textContent= tasktext;
+text.classList.add('task_text');
+
+const editbtn =document.createElement('button');
+editbtn.textContent="Edit";
+editbtn.classList.add('edit_task');
+
+const deletebtn =document.createElement('button');
+deletebtn.textContent="Delete";
+deletebtn.classList.add('delete_task');
+
+
+div.append(checkbox,text,editbtn,deletebtn);
+tasklist.appendChild (div);
+
+
+if(defaultsentence){
+    defaultsentence.remove();
+}
+//LOCALSTORAGE A FAIRE APRES 
+
+
+
+
+}
+
+})
+
+
+
+
+// EVENEMENT AU CLIC SUR LES BUTTONS(edit delete checkbox) SUR LA liste de tache 
+
+tasklist .addEventListener('click',(e)=>{
+    if (e.target.classList.contains("delete_task")){
+        e.target.div.remove();
+    }
+    if (e.target.classList.contains("edit_task")){
+        //code
+    }
+    if (e.target.classList.contains("checkbox")){
+         text.classList.add("text");
+    }
+})
+
+
+
+    </script>
+
+
+
+
+   <!-- Créer une liste de tâches :
+
+ajouter
+
+supprimer
+
+marquer terminé
+
+
+Bonus :
+
+sauvegarder avec LocalStorage
+
+Tu apprendras :
+
+CRUD simple
+
+stockage navigateur -->
+</body>
+</html>
