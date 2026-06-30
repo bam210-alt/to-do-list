@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TO DO LIST</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<!-- 
+
     <style>
         body{
         background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
@@ -26,11 +26,7 @@
     h1,p{
             margin: 10px 15px;
         }
-     #form{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+
 
        .inputTaskbutton{
 width: 360px;
@@ -106,16 +102,16 @@ input[type="checkbox"]:checked {
  
        }
         .text{
-        text-decoration:line-through}
-    </style> -->
+        text-decoration:line-through;
+        color :rgba(255, 255, 255, 0.214);
+        }
+    </style> 
 </head>
 <body>
     <div id="task">
         <h1>To-do-list</h1>
-        <form id="form">
             <input type="text" placeholder="Please enter a new task" id="inputTask" required>
             <button type="button" id="addTaskbutton">Add Task</button>
-        </form>
         <p id="default_sentence">Aucun tache a ce moment </p>
         <div id="task_list">
 
@@ -127,11 +123,11 @@ input[type="checkbox"]:checked {
     <script>
 //DECLARATION VARIABLE 
         const  addtask  =document.getElementById("addTaskbutton");
-        const inputTask =docmument.getElementById("inputTask");
+        const inputTask =document.getElementById("inputTask");
         const defaultsentence =document.getElementById("default_sentence");
         const form= document.getElementById("form");
 
-        const tasklist =document.getElementsById("task_list");
+        const tasklist =document.getElementById("task_list");
 
 
 
@@ -141,7 +137,7 @@ addtask.addEventListener('click',(e)=>{
 e.preventDefault();
 
 const tasktext =inputTask.value;
-if(tasktext.trim===""){
+if(tasktext.trim()===""){
     alert ("veuillez entrer une tache");
 }
 else{
@@ -172,8 +168,7 @@ tasklist.appendChild (div);
 if(defaultsentence){
     defaultsentence.remove();
 }
-//LOCALSTORAGE A FAIRE APRES 
-
+inputTask.value="";
 
 
 
@@ -186,16 +181,58 @@ if(defaultsentence){
 
 // EVENEMENT AU CLIC SUR LES BUTTONS(edit delete checkbox) SUR LA liste de tache 
 
-tasklist .addEventListener('click',(e)=>{
-    if (e.target.classList.contains("delete_task")){
-        e.target.div.remove();
-    }
-    if (e.target.classList.contains("edit_task")){
-        //code
-    }
+tasklist.addEventListener('click',(e)=>{
+    
+    const task =e.target.closest(".task");
+    const text= task.querySelector(".task_text");
+    const  editBtn=task.querySelector(".edit_task")
+
+    
     if (e.target.classList.contains("checkbox")){
-         text.classList.add("text");
+         
+            text.classList.toggle("text");
+            editBtn.disabled =e.target.checked;
     }
+
+
+    if (e.target.closest(".delete_task")){
+        e.target.closest(".task").remove();
+    }
+
+
+    if (e.target.closest(".edit_task")){
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = text.textContent;
+    input.classList.add('task_text');
+
+    if(!task.classList.contains("editing")){
+        text.replaceWith(input);
+        input.focus();  
+        task.classList.add("editing");
+    }else{  
+        const input= task.querySelector("input.task_text"); 
+        const newtext = document.createElement("p");
+        newtext.className = "task_text";
+        newtext.textContent = input.value;
+        input.replaceWith(newtext);
+        task.classList.remove("editing");
+
+    }
+ 
+        
+
+        
+
+
+
+
+    }
+
+
+    
+    
+
 })
 
 
