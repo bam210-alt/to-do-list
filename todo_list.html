@@ -108,7 +108,7 @@ input[type="checkbox"]:checked {
     </style> 
 </head>
 <body>
-    <div id="task">
+    <div id="to_do">
         <h1>To-do-list</h1>
             <input type="text" placeholder="Please enter a new task" id="inputTask" required>
             <button type="button" id="addTaskbutton">Add Task</button>
@@ -122,25 +122,44 @@ input[type="checkbox"]:checked {
 
     <script>
 //DECLARATION VARIABLE 
+        const todo =document.getElementById("to_do");
         const  addtask  =document.getElementById("addTaskbutton");
         const inputTask =document.getElementById("inputTask");
         const defaultsentence =document.getElementById("default_sentence");
-        const form= document.getElementById("form");
-
         const tasklist =document.getElementById("task_list");
+//FUNCTION
+function recupererTaches(){
+    
+    const data = localStorage.getItem("Taches") ;
+    return data? JSON.parse(data) : [];
 
-
-
-// AJOUT  D'UJNE TACHE AUNCLICK DE "AJOUTER TACHE" +AJOUT DANS LE LOClsotrage
-
-addtask.addEventListener('click',(e)=>{
-e.preventDefault();
-
-const tasktext =inputTask.value;
-if(tasktext.trim()===""){
-    alert ("veuillez entrer une tache");
 }
-else{
+function saveTask(taches){
+    localStorage.setItem("Taches",JSON.stringify(taches));
+}
+function ajouterTaches(){
+const tasktext =inputTask.value.trim();
+if(tasktext===""){
+    alert ("veuillez entrer une tache");
+    return; 
+}
+const alltask =recupererTaches();
+alltask.push(tasktext);
+saveTask(alltask);
+inputTask.value="";
+createTask();
+
+
+}
+function createTask(){
+tasklist.innerHTML="";
+
+const alltask =recupererTaches();
+if(alltask.length ===0){
+    tasklist.appendChild(defaultsentence);
+    return
+}
+alltask.forEach(item =>{
 const div = document.createElement("div");
 div.classList.add("task");
 
@@ -149,7 +168,7 @@ checkbox.type ="checkbox";
 checkbox.classList.add('checkbox');
 
 const text =document.createElement('p');
-text.textContent= tasktext;
+text.textContent= item;
 text.classList.add('task_text');
 
 const editbtn =document.createElement('button');
@@ -168,13 +187,32 @@ tasklist.appendChild (div);
 if(defaultsentence){
     defaultsentence.remove();
 }
-inputTask.value="";
+
+})
 
 
 
 }
 
-})
+
+
+
+
+
+
+addtask.addEventListener('click',()=>ajouterTaches());
+// tache_number = tasklist.querySelectorAll(".task");
+// moreBtn =tasklist.querySelector(".bouton");
+
+// if(tache_number.length >= 2){
+// if (!moreBtn){
+
+// moreBtn  =document.createElement('button');
+// moreBtn.textContent="Voir Plus";
+// moreBtn.classList.add('edit_task','bouton');
+// tasklist.appendChild(moreBtn)  }}
+
+
 
 
 
@@ -184,8 +222,9 @@ inputTask.value="";
 tasklist.addEventListener('click',(e)=>{
     
     const task =e.target.closest(".task");
+    if(!task)return;
     const text= task.querySelector(".task_text");
-    const  editBtn=task.querySelector(".edit_task")
+    const  editBtn=task.querySelector(".edit_task");
 
     
     if (e.target.classList.contains("checkbox")){
@@ -196,7 +235,11 @@ tasklist.addEventListener('click',(e)=>{
 
 
     if (e.target.closest(".delete_task")){
-        e.target.closest(".task").remove();
+        const index = Array.from(tasklist.children).indexOf(task); // position de la tâche
+        const alltask = recupererTaches();
+        alltask.splice(index, 1);   // retire 1 élément à cet index
+        saveTask(alltask);   
+        task.remove();
     }
 
 
@@ -220,38 +263,15 @@ tasklist.addEventListener('click',(e)=>{
 
     }
  
-        
-
-        
-
-
-
-
     }
-
-
-    
-    
-
 })
-
-
-
+createTask();
     </script>
 
 
 
 
    <!-- Créer une liste de tâches :
-
-ajouter
-
-supprimer
-
-marquer terminé
-
-
-Bonus :
 
 sauvegarder avec LocalStorage
 
